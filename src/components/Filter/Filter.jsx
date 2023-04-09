@@ -1,22 +1,22 @@
-import PropTypes from 'prop-types';
-import { StyledLabel } from './Filter.styled';
-import { setFilter } from 'redux/filterSlice';
-import { useDispatch } from 'react-redux';
+import PropTypes from "prop-types";
+import { setFilter } from "redux/filterSlice";
+import { useDispatch } from "react-redux";
+import { Box, FormControl, Input } from "@chakra-ui/react";
 
 const Filter = () => {
   const dispatch = useDispatch();
   return (
-    <div>
-      <StyledLabel htmlFor="">
+    <Box my="5">
+      <FormControl htmlFor="">
         <span>Find contacts by name</span>
-        <input
+        <Input
           type="text"
-          onChange={event => {
+          onChange={(event) => {
             dispatch(setFilter(event.target.value));
           }}
         />
-      </StyledLabel>
-    </div>
+      </FormControl>
+    </Box>
   );
 };
 

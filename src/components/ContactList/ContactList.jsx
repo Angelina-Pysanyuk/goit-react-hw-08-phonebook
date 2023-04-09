@@ -1,24 +1,19 @@
-import Contact from 'components/Contact/Contact';
-import PropTypes from 'prop-types';
-import { StyledLi, StyledUl } from './ContactList.styled';
-import { getFilterSelector } from 'redux/selectors';
-import { useSelector } from 'react-redux';
+import Contact from "components/Contact/Contact";
+import PropTypes from "prop-types";
+import { getFilterSelector } from "redux/selectors";
+import { useSelector } from "react-redux";
+import { Box, List } from "@chakra-ui/react";
 
 const ContactList = () => {
   const visibleContacts = useSelector(getFilterSelector);
-
   return (
-    <div>
-      <StyledUl>
-        {visibleContacts.map(contact => {
-          return (
-            <StyledLi key={contact.name}>
-              <Contact contact={contact} />
-            </StyledLi>
-          );
+    <Box>
+      <List>
+        {visibleContacts.map((contact) => {
+          return <Contact contact={contact} key={contact.name} />;
         })}
-      </StyledUl>
-    </div>
+      </List>
+    </Box>
   );
 };
 

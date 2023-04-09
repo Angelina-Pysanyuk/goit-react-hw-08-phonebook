@@ -1,5 +1,5 @@
-import React from 'react';
-import { Puff } from 'react-loader-spinner';
+import React from "react";
+import { Puff } from "react-loader-spinner";
 
 const Loader = () => {
   return (
@@ -9,7 +9,7 @@ const Loader = () => {
       radius={1}
       color="rgb(87, 155, 177)"
       ariaLabel="puff-loading"
-      wrapperStyle={{ justifyContent: 'center' }}
+      wrapperStyle={{ justifyContent: "center" }}
       wrapperClass=""
       visible={true}
     />

@@ -1,11 +1,16 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { postContacts, removeContacts, requestContacts } from 'servicesAPI/api';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createContacts,
+  removeContacts,
+  getContacts,
+  updateContacts,
+} from "servicesAPI/api";
 
 export const fetchContacts = createAsyncThunk(
-  '/contacts/getContacts',
+  "/contacts/getContacts",
   async (_, thunkAPI) => {
     try {
-      const contacts = await requestContacts();
+      const contacts = await getContacts();
       return contacts;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -14,10 +19,10 @@ export const fetchContacts = createAsyncThunk(
 );
 
 export const addContacts = createAsyncThunk(
-  '/contacts/addContacts',
-  async (newContact, thunkAPI) => {
+  "/contacts/addContacts",
+  async (newContact, idContact, thunkAPI) => {
     try {
-      const contacts = await postContacts(newContact);
+      const contacts = await createContacts(newContact, idContact);
       return contacts;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -26,7 +31,7 @@ export const addContacts = createAsyncThunk(
 );
 
 export const deleteContacts = createAsyncThunk(
-  '/contacts/deleteContacts',
+  "/contacts/deleteContacts",
   async (contactId, thunkAPI) => {
     try {
       const contacts = await removeContacts(contactId);
@@ -37,8 +42,20 @@ export const deleteContacts = createAsyncThunk(
   }
 );
 
+export const updateItem = createAsyncThunk(
+  "/contacts/updateItem",
+  async (contactId, thunkAPI) => {
+    try {
+      const contacts = await updateContacts(contactId);
+      return contacts;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const contactsSlice = createSlice({
-  name: 'contacts',
+  name: "contacts",
   initialState: {
     items: [],
     error: null,
@@ -47,14 +64,15 @@ const contactsSlice = createSlice({
   reducers: {
     deleteContact(state, action) {
       state.items = state.items.filter(
-        contact => contact.id !== action.payload
+        (contact) => contact.id !== action.payload
       );
     },
   },
 
-  extraReducers: builder =>
+  extraReducers: (builder) =>
     builder
-      .addCase(fetchContacts.pending, state => {
+      // Create
+      .addCase(fetchContacts.pending, (state) => {
         state.error = null;
         state.isLoading = true;
       })
@@ -67,23 +85,42 @@ const contactsSlice = createSlice({
         state.error = payload;
         state.isLoading = false;
       })
-      .addCase(addContacts.pending, state => {
+      // Add Contact
+      .addCase(addContacts.pending, (state) => {
         state.error = null;
       })
       .addCase(addContacts.fulfilled, (state, { payload }) => {
         state.error = null;
-        console.log('addContacts', payload);
-        state.items = [...state.items, payload];
+        state.items = [payload, ...state.items];
       })
       .addCase(addContacts.rejected, (state, { payload }) => {
         state.error = payload;
       })
-      .addCase(deleteContacts.pending, state => {
+      // Update
+      .addCase(updateItem.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(updateItem.fulfilled, (state, { payload }) => {
+        state.error = null;
+        state.items = state.items.reduce((items, contact) => {
+          if (contact.id === payload.id) {
+            return [...items, { ...payload }];
+          }
+          return [...items, contact];
+        }, []);
+      })
+      .addCase(updateItem.rejected, (state, { payload }) => {
+        state.error = payload;
+      })
+      // Delete
+      .addCase(deleteContacts.pending, (state) => {
         state.error = null;
       })
       .addCase(deleteContacts.fulfilled, (state, { payload }) => {
         state.error = null;
-        state.items = state.items.filter(contact => contact.id !== payload.id);
+        state.items = state.items.filter(
+          (contact) => contact.id !== payload.id
+        );
       })
       .addCase(deleteContacts.rejected, (state, { payload }) => {
         state.error = payload;

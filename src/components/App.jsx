@@ -1,37 +1,41 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-// import { getLoadingStatus } from 'redux/selectors';
-// import ContactList from './ContactList/ContactList';
-// import Phonebook from './Phonebook/Phonebook';
-// import Filter from './Filter/Filter';
-// import Loader from './Loader/Loader';
-import { Routes, Route } from 'react-router-dom';
-import Layout from './Layout';
-import Contacts from '../views/Contacts';
-import LogIn from '../views/LogIn';
-import Registration from '../views/Registration';
-import ProtectedRouter from '../hoc/ProtectedRouter';
-import RouterName from '../const/RouterName';
-import { Box } from '@chakra-ui/react';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Routes, Route } from "react-router-dom";
+import Layout from "./Layout";
+import Contacts from "../views/Contacts";
+import LogIn from "../views/LogIn";
+import Registration from "../views/Registration";
+import ProtectedRouter from "../hoc/ProtectedRouter";
+import RouterName from "../const/RouterName";
+import { Box } from "@chakra-ui/react";
 
-import Loader from './Loader/Loader';
-import { currentUser } from 'redux/userSlice';
+import Loader from "./Loader/Loader";
+import { currentUser } from "redux/userSlice";
 
 const App = () => {
-  const isAuth = useSelector(({ user }) => user.isAuth);
-  const loader = useSelector(({ loader }) => loader);
-  console.log(loader);
+  const userData = useSelector(({ user }) => user);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const checkToken = () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (token) dispatch(currentUser(token));
     };
     checkToken();
   }, [dispatch]);
 
-  if (loader) return <Loader />;
+  if (userData.loader)
+    return (
+      <Box
+        w="100%"
+        h="100vh"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Loader />
+      </Box>
+    );
   return (
     <Box w="100%" h="100vh" display="flex">
       <Routes>
@@ -43,7 +47,7 @@ const App = () => {
           <Route
             path={RouterName.CONTACTS}
             element={
-              <ProtectedRouter isProtect={isAuth}>
+              <ProtectedRouter isProtect={userData.isAuth}>
                 <Contacts />
               </ProtectedRouter>
             }
@@ -52,8 +56,8 @@ const App = () => {
             path={RouterName.LOGIN}
             element={
               <ProtectedRouter
-                redirectTo={isAuth ? RouterName.CONTACTS : null}
-                isProtect={!isAuth}
+                redirectTo={userData.isAuth ? RouterName.CONTACTS : null}
+                isProtect={!userData.isAuth}
               >
                 <LogIn />
               </ProtectedRouter>
@@ -63,8 +67,8 @@ const App = () => {
             path={RouterName.REGISTRATION}
             element={
               <ProtectedRouter
-                redirectTo={isAuth ? RouterName.CONTACTS : null}
-                isProtect={!isAuth}
+                redirectTo={userData.isAuth ? RouterName.CONTACTS : null}
+                isProtect={!userData.isAuth}
               >
                 <Registration />
               </ProtectedRouter>
@@ -72,12 +76,6 @@ const App = () => {
           />
         </Route>
       </Routes>
-      {/* <h2>Phonebook</h2>
-      <Phonebook />
-      <Filter />
-      <h2>Contacts</h2>
-      {isLoading && <Loader />}
-      <ContactList /> */}
     </Box>
   );
 };

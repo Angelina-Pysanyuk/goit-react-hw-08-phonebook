@@ -1,23 +1,20 @@
-import Contact from 'components/Contact/Contact';
-import { getFilterSelector } from 'redux/selectors';
-import { useSelector } from 'react-redux';
-import { Box } from '@chakra-ui/react';
+import ContactList from "components/ContactList/ContactList";
+import { Container, Stack } from "@chakra-ui/react";
+import Phonebook from "../components/Phonebook/Phonebook";
+import Filter from "../components/Filter/Filter";
+import Loader from "components/Loader/Loader";
+import { useSelector } from "react-redux";
 
 const Contacts = () => {
-  const visibleContacts = useSelector(getFilterSelector);
-
+  const contacts = useSelector(({ contacts }) => contacts);
   return (
-    <Box>
-      <ul>
-        {visibleContacts.map(contact => {
-          return (
-            <li key={contact.name}>
-              <Contact contact={contact} />
-            </li>
-          );
-        })}
-      </ul>
-    </Box>
+    <Container my="5">
+      <Stack>
+        <Phonebook />
+      </Stack>
+      <Stack>{contacts.items?.length > 1 && <Filter />}</Stack>
+      <Stack>{contacts.isLoading ? <Loader /> : <ContactList />}</Stack>
+    </Container>
   );
 };
 
