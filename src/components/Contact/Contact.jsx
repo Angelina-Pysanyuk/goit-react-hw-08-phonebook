@@ -49,7 +49,7 @@ const Contact = ({ contact }) => {
         </Box>
         <ButtonGroup>
           <Button
-            colorScheme="orange"
+            colorScheme="purple"
             variant="outline"
             onClick={onOpen}
             type="button"
