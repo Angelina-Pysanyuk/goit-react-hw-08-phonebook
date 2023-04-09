@@ -1,7 +1,7 @@
-import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
-import { deleteContacts } from "redux/contactSlice";
-import ModalUpdate from "../Modal/ModalUpdate";
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { deleteContacts } from 'redux/contactSlice';
+import ModalUpdate from '../Modal/ModalUpdate';
 import {
   ListItem,
   Button,
@@ -9,7 +9,7 @@ import {
   Text,
   useDisclosure,
   ButtonGroup,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 const Contact = ({ contact }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -49,7 +49,7 @@ const Contact = ({ contact }) => {
         </Box>
         <ButtonGroup>
           <Button
-            colorScheme="purple"
+            colorScheme="teal"
             variant="outline"
             onClick={onOpen}
             type="button"
