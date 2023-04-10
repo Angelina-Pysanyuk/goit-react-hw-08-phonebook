@@ -10,16 +10,16 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from "@chakra-ui/react";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateItem } from "../../redux/contactSlice";
+} from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateItem } from '../../redux/contacts/operations';
 
 export default function ModalUpdate({ isOpen, onClose, idContact }) {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const dispatch = useDispatch();
-  const onUpdate = (e) => {
+  const onUpdate = e => {
     e.preventDefault();
     const contact = {
       name,
@@ -44,7 +44,7 @@ export default function ModalUpdate({ isOpen, onClose, idContact }) {
                 pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                 title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={e => setName(e.target.value)}
                 required
               />
             </FormControl>
@@ -56,7 +56,7 @@ export default function ModalUpdate({ isOpen, onClose, idContact }) {
                 pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                 title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={e => setPhone(e.target.value)}
                 required
               />
             </FormControl>

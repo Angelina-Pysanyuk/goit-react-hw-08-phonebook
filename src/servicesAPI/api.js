@@ -1,73 +1,61 @@
-import axios from "axios";
+import axios from 'axios';
 
-const BASE_URL = "https://connections-api.herokuapp.com";
-
-export const signup = async (userData) => {
-  try {
-    const { data } = await axios.post(`${BASE_URL}/users/signup`, userData);
-    return data;
-  } catch (error) {}
+const setAuthHeader = token => {
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
-export const login = async (userData) => {
+const clearAuthHeader = () => {
+  axios.defaults.headers.common.Authorization = '';
+};
+
+const BASE_URL = 'https://connections-api.herokuapp.com';
+
+// User
+export const signup = async userData => {
+  const { data } = await axios.post(`${BASE_URL}/users/signup`, userData);
+  setAuthHeader(data.token);
+  return data;
+};
+export const login = async userData => {
   const { data } = await axios.post(`${BASE_URL}/users/login`, userData);
+  setAuthHeader(data.token);
   return data;
 };
-export const logout = async (token) => {
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-  const { data } = await axios.post(`${BASE_URL}/users/logout`, null, config);
-  return data;
-};
-
-export const current = async (token) => {
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-  const { data } = await axios.get(`${BASE_URL}/users/current`, config);
+export const logout = async () => {
+  const { data } = await axios.post(`${BASE_URL}/users/logout`, null);
+  clearAuthHeader();
   return data;
 };
 
-export const getContacts = async () => {
-  const token = localStorage.getItem("token");
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-  const { data } = await axios.get(`${BASE_URL}/contacts`, config);
+// Contacts
+export const current = async token => {
+  setAuthHeader(token);
+  const { data } = await axios.get(`${BASE_URL}/users/current`);
   return data;
 };
 
-export const createContacts = async (newContact) => {
-  const token = localStorage.getItem("token");
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-  const { data } = await axios.post(`${BASE_URL}/contacts`, newContact, config);
+export const getContacts = async token => {
+  setAuthHeader(token);
+  const { data } = await axios.get(`${BASE_URL}/contacts`);
   return data;
 };
 
-export const removeContacts = async (contactId) => {
-  const token = localStorage.getItem("token");
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-  const { data } = await axios.delete(
-    `${BASE_URL}/contacts/${contactId}`,
-    config
-  );
+export const createContacts = async (newContact, token) => {
+  setAuthHeader(token);
+  const { data } = await axios.post(`${BASE_URL}/contacts`, newContact);
   return data;
 };
 
-// Maybe
-export const updateContacts = async ({ contact, idContact }) => {
-  const token = localStorage.getItem("token");
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
+export const removeContacts = async (contactId, token) => {
+  setAuthHeader(token);
+  const { data } = await axios.delete(`${BASE_URL}/contacts/${contactId}`);
+  return data;
+};
+
+export const updateContacts = async ({ contact, idContact }, token) => {
+  setAuthHeader(token);
   const { data } = await axios.patch(
     `${BASE_URL}/contacts/${idContact}`,
-    contact,
-    config
+    contact
   );
   return data;
 };

@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import Rules from '../const/Rules';
-import { createUser } from '../redux/userSlice';
+import { createUser } from '../redux/user/operations';
 import { useDispatch } from 'react-redux';
 
 export default function Registration() {
@@ -49,7 +49,7 @@ export default function Registration() {
             <Input type="password" {...register('password', Rules.password)} />
             <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
           </FormControl>
-          <Button type="submit">Sign Up</Button>
+          <Button type="submit">Sign in</Button>
         </form>
       </Box>
     </Box>

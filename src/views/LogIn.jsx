@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import Rules from '../const/Rules';
-import { loginUser } from '../redux/userSlice';
+import { loginUser } from '../redux/user/operations';
 import { useDispatch } from 'react-redux';
 
 export default function LogIn() {

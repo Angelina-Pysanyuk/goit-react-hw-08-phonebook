@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { deleteContacts } from 'redux/contactSlice';
+import { deleteContacts } from 'redux/contacts/operations';
 import ModalUpdate from '../Modal/ModalUpdate';
 import {
   ListItem,

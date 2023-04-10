@@ -1,16 +1,16 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
-import Notiflix from "notiflix";
-import { addContacts, fetchContacts } from "redux/contactSlice";
-import { useDispatch } from "react-redux";
-import { getContacts } from "redux/selectors";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { Box, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import Notiflix from 'notiflix';
+import { addContacts, fetchContacts } from 'redux/contacts/operations';
+import { useDispatch } from 'react-redux';
+import { getContacts } from 'redux/contacts/selectors';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { Box, Button, FormControl, FormLabel, Input } from '@chakra-ui/react';
 
 const Phonebook = () => {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
 
@@ -18,21 +18,21 @@ const Phonebook = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const handleInput = (e) => {
+  const handleInput = e => {
     switch (e.target.name) {
-      case "name":
+      case 'name':
         setName(e.target.value);
         break;
-      case "phone":
+      case 'phone':
         setPhone(e.target.value);
         break;
       default:
-        console.log("not correct option");
+        console.log('not correct option');
         break;
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     const contact = {
       name,
@@ -40,17 +40,17 @@ const Phonebook = () => {
     };
 
     const isExist = contacts.find(
-      (item) => item.name.toLowerCase() === contact.name.toLowerCase()
+      item => item.name.toLowerCase() === contact.name.toLowerCase()
     );
 
     if (isExist) {
-      Notiflix.Notify.info("This contact already exists");
+      Notiflix.Notify.info('This contact already exists');
       return;
     }
 
     dispatch(addContacts(contact));
-    setName("");
-    setPhone("");
+    setName('');
+    setPhone('');
   };
 
   return (

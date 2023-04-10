@@ -1,20 +1,20 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import React from "react";
-import { Outlet, Link as ReachLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import RouterName from "../const/RouterName";
-import { logoutUser } from "redux/userSlice";
+import { Box, Button, Flex, Heading } from '@chakra-ui/react';
+import React from 'react';
+import { Outlet, Link as ReachLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import RouterName from '../const/RouterName';
+import { logoutUser } from 'redux/user/operations';
+import { getUser } from '../redux/user/selectors';
 
 export default function Layout() {
   const dispatch = useDispatch();
-  const userData = useSelector(({ user }) => user);
+  const userData = useSelector(getUser);
   const logout = () => {
-    const token = localStorage.getItem("token");
-    dispatch(logoutUser(token));
+    dispatch(logoutUser());
   };
 
   const LogOut = () => {
-    return <Button onClick={logout}>LogOut</Button>;
+    return <Button onClick={logout}>Log out</Button>;
   };
   return (
     <Flex flexDirection="column" w="100%">
@@ -28,7 +28,7 @@ export default function Layout() {
         {!userData.isAuth ? (
           <>
             <Button as={ReachLink} to={RouterName.LOGIN} mr="4">
-              Login
+              Log in
             </Button>
             <Button as={ReachLink} to={RouterName.REGISTRATION}>
               Sign in
@@ -37,7 +37,7 @@ export default function Layout() {
         ) : (
           <Flex alignItems="center">
             <Heading as="h3" size="md" mr="3">
-              {userData.user.name}
+              {userData.name}
             </Heading>
             <LogOut />
           </Flex>
@@ -48,7 +48,7 @@ export default function Layout() {
       </Box>
 
       <Flex justifyContent="center" py="5" backgroundColor="teal.500">
-        Made by ANGELINA🐧💖
+        Made by ANGELINA 🐧💖
       </Flex>
     </Flex>
   );
