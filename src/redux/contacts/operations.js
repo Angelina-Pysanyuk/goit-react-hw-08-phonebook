@@ -10,10 +10,7 @@ export const fetchContacts = createAsyncThunk(
   '/contacts/getContacts',
   async (_, thunkAPI) => {
     try {
-      const state = thunkAPI.getState();
-      const persistedToken = state.user.token;
-
-      const contacts = await getContacts(persistedToken);
+      const contacts = await getContacts();
       return contacts;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -25,10 +22,7 @@ export const addContacts = createAsyncThunk(
   '/contacts/addContacts',
   async (newContact, thunkAPI) => {
     try {
-      const state = thunkAPI.getState();
-      const persistedToken = state.user.token;
-
-      const contacts = await createContacts(newContact, persistedToken);
+      const contacts = await createContacts(newContact);
       return contacts;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -40,10 +34,7 @@ export const deleteContacts = createAsyncThunk(
   '/contacts/deleteContacts',
   async (contactId, thunkAPI) => {
     try {
-      const state = thunkAPI.getState();
-      const persistedToken = state.user.token;
-
-      const contacts = await removeContacts(contactId, persistedToken);
+      const contacts = await removeContacts(contactId);
       return contacts;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -55,10 +46,7 @@ export const updateItem = createAsyncThunk(
   '/contacts/updateItem',
   async (contactId, thunkAPI) => {
     try {
-      const state = thunkAPI.getState();
-      const persistedToken = state.user.token;
-
-      const contacts = await updateContacts(contactId, persistedToken);
+      const contacts = await updateContacts(contactId);
       return contacts;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

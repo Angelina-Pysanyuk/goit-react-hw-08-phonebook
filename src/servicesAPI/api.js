@@ -33,26 +33,22 @@ export const current = async token => {
   return data;
 };
 
-export const getContacts = async token => {
-  setAuthHeader(token);
+export const getContacts = async () => {
   const { data } = await axios.get(`${BASE_URL}/contacts`);
   return data;
 };
 
-export const createContacts = async (newContact, token) => {
-  setAuthHeader(token);
+export const createContacts = async newContact => {
   const { data } = await axios.post(`${BASE_URL}/contacts`, newContact);
   return data;
 };
 
-export const removeContacts = async (contactId, token) => {
-  setAuthHeader(token);
+export const removeContacts = async contactId => {
   const { data } = await axios.delete(`${BASE_URL}/contacts/${contactId}`);
   return data;
 };
 
-export const updateContacts = async ({ contact, idContact }, token) => {
-  setAuthHeader(token);
+export const updateContacts = async ({ contact, idContact }) => {
   const { data } = await axios.patch(
     `${BASE_URL}/contacts/${idContact}`,
     contact
